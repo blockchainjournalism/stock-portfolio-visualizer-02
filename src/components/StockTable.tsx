@@ -1,4 +1,5 @@
 import { Stock } from "@/services/stockApi";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -63,9 +64,17 @@ const StockTable = ({ stocks, isLoading }: StockTableProps) => {
         </TableHeader>
         <TableBody>
           {stocks.map((stock) => (
-            <TableRow key={stock.symbol}>
-              <TableCell className="font-medium">{stock.symbol}</TableCell>
-              <TableCell>{stock.name}</TableCell>
+            <TableRow key={stock.symbol} className="cursor-pointer hover:bg-gray-50">
+              <TableCell className="font-medium">
+                <Link to={`/stock/${stock.symbol}`} className="text-primary hover:underline">
+                  {stock.symbol}
+                </Link>
+              </TableCell>
+              <TableCell>
+                <Link to={`/stock/${stock.symbol}`} className="hover:underline">
+                  {stock.name}
+                </Link>
+              </TableCell>
               <TableCell className="text-right">{formatNumber(stock.price)}</TableCell>
               <TableCell 
                 className={`text-right ${

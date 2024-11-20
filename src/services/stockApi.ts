@@ -5,7 +5,7 @@ const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
 // Add localStorage caching
 const CACHE_KEY = 'stockData';
-const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds
+const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 export interface Stock {
   symbol: string;

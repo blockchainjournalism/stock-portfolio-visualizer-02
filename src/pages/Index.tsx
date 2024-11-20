@@ -8,8 +8,8 @@ const Index = () => {
   const { data: stocks = [], isLoading, isError } = useQuery({
     queryKey: ["stocks"],
     queryFn: fetchStocks,
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
-    refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes
+    staleTime: 24 * 60 * 60 * 1000, // Cache data for 24 hours
+    refetchInterval: 24 * 60 * 60 * 1000, // Refetch every 24 hours
     refetchOnWindowFocus: false, // Prevent refetch on window focus
     retry: 1, // Only retry once on failure
   });

@@ -1,0 +1,72 @@
+import { Stock } from "@/services/stockApi";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+interface StockTableProps {
+  stocks: Stock[];
+  isLoading: boolean;
+}
+
+const StockTable = ({ stocks, isLoading }: StockTableProps) => {
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+    }).format(num);
+  };
+
+  const formatMarketCap = (marketCap: number) => {
+    if (marketCap >= 1e12) return `${(marketCap / 1e12).toFixed(2)}T`;
+    if (marketCap >= 1e9) return `${(marketCap / 1e9).toFixed(2)}B`;
+    if (marketCap >= 1e6) return `${(marketCap / 1e6).toFixed(2)}M`;
+    return formatNumber(marketCap);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Symbol</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead className="text-right">Price</TableHead>
+            <TableHead className="text-right">Change</TableHead>
+            <TableHead className="text-right">Market Cap</TableHead>
+            <TableHead className="text-right">Volume</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {stocks.map((stock) => (
+            <TableRow key={stock.symbol}>
+              <TableCell className="font-medium">{stock.symbol}</TableCell>
+              <TableCell>{stock.name}</TableCell>
+              <TableCell className="text-right">{formatNumber(stock.price)}</TableCell>
+              <TableCell className={`text-right ${stock.change >= 0 ? "text-green-600" : "text-red-600"}`}>
+                {stock.change.toFixed(2)}%
+              </TableCell>
+              <TableCell className="text-right">{formatMarketCap(stock.marketCap)}</TableCell>
+              <TableCell className="text-right">{stock.volume.toLocaleString()}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+export default StockTable;

@@ -85,3 +85,31 @@ export const fetchStocks = async (): Promise<Stock[]> => {
     return [];
   }
 };
+
+interface PriceTarget {
+  symbol: string;
+  priceTarget: number;
+}
+
+export const fetchPriceTarget = async (symbol: string): Promise<number | null> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/price-target?symbol=${symbol}&apikey=${API_KEY}`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!Array.isArray(data) || data.length === 0) {
+      return null;
+    }
+
+    return data[0].priceTarget || null;
+  } catch (error) {
+    console.error("Failed to fetch price target:", error);
+    return null;
+  }
+};

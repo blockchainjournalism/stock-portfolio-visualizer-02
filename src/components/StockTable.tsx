@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface StockTableProps {
   stocks: Stock[];
@@ -31,8 +32,18 @@ const StockTable = ({ stocks, isLoading }: StockTableProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+      <div className="space-y-3">
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-4 w-[300px]" />
+      </div>
+    );
+  }
+
+  if (stocks.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-gray-500">No stocks data available</p>
       </div>
     );
   }
@@ -56,7 +67,11 @@ const StockTable = ({ stocks, isLoading }: StockTableProps) => {
               <TableCell className="font-medium">{stock.symbol}</TableCell>
               <TableCell>{stock.name}</TableCell>
               <TableCell className="text-right">{formatNumber(stock.price)}</TableCell>
-              <TableCell className={`text-right ${stock.change >= 0 ? "text-green-600" : "text-red-600"}`}>
+              <TableCell 
+                className={`text-right ${
+                  stock.change >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
                 {stock.change.toFixed(2)}%
               </TableCell>
               <TableCell className="text-right">{formatMarketCap(stock.marketCap)}</TableCell>

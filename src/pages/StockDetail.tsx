@@ -85,7 +85,8 @@ const StockDetail = () => {
         <StockHeader 
           name={stock.name} 
           symbol={stock.symbol} 
-          priceTarget={priceTarget || undefined} 
+          priceTarget={priceTarget || undefined}
+          currentPrice={stock.price}
         />
         <StockMetrics 
           price={stock.price}

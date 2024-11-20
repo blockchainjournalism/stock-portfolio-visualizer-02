@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 
-const API_KEY = "YOUR_API_KEY"; // Replace with actual API key
+const API_KEY = "tGgEwEGYdbqh35uXZzhhYYMz7CYpCTlD"; // Using the provided API key
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
 export interface Stock {

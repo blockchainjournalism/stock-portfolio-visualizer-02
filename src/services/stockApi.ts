@@ -3,9 +3,8 @@ import { toast } from "@/components/ui/use-toast";
 const API_KEY = "tGgEwEGYdbqh35uXZzhhYYMz7CYpCTlD";
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
-// Add localStorage caching
 const CACHE_KEY = 'stockData';
-const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
 
 export interface Stock {
   symbol: string;
@@ -37,15 +36,28 @@ const getCachedData = (): Stock[] | null => {
 
 export const fetchStocks = async (): Promise<Stock[]> => {
   try {
-    // Check cache first
     const cachedData = getCachedData();
     if (cachedData) {
       return cachedData;
     }
 
-    // If no cache, fetch from API
+    // First, fetch available indexes to get Borsa Istanbul symbols
+    const indexResponse = await fetch(
+      `${BASE_URL}/available-indexes?apikey=${API_KEY}`
+    );
+    
+    if (!indexResponse.ok) {
+      throw new Error(`API Error: ${indexResponse.status}`);
+    }
+    
+    const indexData = await indexResponse.json();
+    const istanbulIndexes = indexData.filter(
+      (index: any) => index.stockExchange === "Istanbul"
+    );
+
+    // Then fetch stock data for Borsa Istanbul
     const response = await fetch(
-      `${BASE_URL}/stock-screener?apikey=${API_KEY}&limit=50&exchange=NASDAQ&isActivelyTrading=true`
+      `${BASE_URL}/stock-screener?apikey=${API_KEY}&exchange=BIST&isActivelyTrading=true`
     );
     
     if (!response.ok) {
@@ -68,7 +80,6 @@ export const fetchStocks = async (): Promise<Stock[]> => {
       volume: stock.volume || 0
     }));
 
-    // Cache the fetched data
     localStorage.setItem(CACHE_KEY, JSON.stringify({
       data: stocks,
       timestamp: Date.now()
@@ -85,11 +96,6 @@ export const fetchStocks = async (): Promise<Stock[]> => {
     return [];
   }
 };
-
-interface PriceTarget {
-  symbol: string;
-  priceTarget: number;
-}
 
 export const fetchPriceTarget = async (symbol: string): Promise<number | null> => {
   try {

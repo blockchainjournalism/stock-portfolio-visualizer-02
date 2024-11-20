@@ -3,6 +3,10 @@ import { toast } from "@/components/ui/use-toast";
 const API_KEY = "tGgEwEGYdbqh35uXZzhhYYMz7CYpCTlD";
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
+// Add localStorage caching
+const CACHE_KEY = 'stockData';
+const CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 export interface Stock {
   symbol: string;
   name: string;
@@ -13,11 +17,35 @@ export interface Stock {
   volume: number;
 }
 
+interface CacheData {
+  data: Stock[];
+  timestamp: number;
+}
+
+const getCachedData = (): Stock[] | null => {
+  const cached = localStorage.getItem(CACHE_KEY);
+  if (!cached) return null;
+
+  const { data, timestamp }: CacheData = JSON.parse(cached);
+  if (Date.now() - timestamp > CACHE_EXPIRY) {
+    localStorage.removeItem(CACHE_KEY);
+    return null;
+  }
+
+  return data;
+};
+
 export const fetchStocks = async (): Promise<Stock[]> => {
   try {
-    // Using stock screener endpoint which provides more reliable data
+    // Check cache first
+    const cachedData = getCachedData();
+    if (cachedData) {
+      return cachedData;
+    }
+
+    // If no cache, fetch from API
     const response = await fetch(
-      `${BASE_URL}/stock-screener?apikey=${API_KEY}&limit=100&exchange=NASDAQ&isActivelyTrading=true`
+      `${BASE_URL}/stock-screener?apikey=${API_KEY}&limit=50&exchange=NASDAQ&isActivelyTrading=true`
     );
     
     if (!response.ok) {
@@ -30,7 +58,7 @@ export const fetchStocks = async (): Promise<Stock[]> => {
       throw new Error("Invalid data format received from API");
     }
 
-    return data.map((stock: any) => ({
+    const stocks = data.map((stock: any) => ({
       symbol: stock.symbol,
       name: stock.companyName,
       price: stock.price,
@@ -39,6 +67,14 @@ export const fetchStocks = async (): Promise<Stock[]> => {
       marketCap: stock.marketCap || 0,
       volume: stock.volume || 0
     }));
+
+    // Cache the fetched data
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+      data: stocks,
+      timestamp: Date.now()
+    }));
+
+    return stocks;
   } catch (error) {
     console.error("Failed to fetch stocks:", error);
     toast({

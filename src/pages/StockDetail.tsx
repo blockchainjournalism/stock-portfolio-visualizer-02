@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { fetchStocks, fetchPriceTarget } from "@/services/stockApi";
+import { fetchStocks, fetchStockProfile, fetchPriceTarget } from "@/services/stockApi";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,6 +16,16 @@ const StockDetail = () => {
   const { data: stocks = [], isLoading: isLoadingStocks } = useQuery({
     queryKey: ["stocks"],
     queryFn: fetchStocks,
+    staleTime: 24 * 60 * 60 * 1000,
+    refetchInterval: 24 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const { data: profile } = useQuery({
+    queryKey: ["stockProfile", symbol],
+    queryFn: () => fetchStockProfile(symbol!),
+    enabled: !!symbol,
     staleTime: 24 * 60 * 60 * 1000,
     refetchInterval: 24 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -104,6 +114,17 @@ const StockDetail = () => {
         <StockDetails 
           price={stock.price}
           volume={stock.volume}
+          beta={stock.beta}
+          lastDividend={stock.lastDividend}
+          eps={stock.eps}
+          pe={stock.pe}
+          sharesOutstanding={stock.sharesOutstanding}
+          industry={stock.industry}
+          sector={stock.sector}
+          description={profile?.description}
+          ceo={profile?.ceo}
+          employees={profile?.fullTimeEmployees}
+          website={profile?.website}
         />
       </main>
       <Footer />

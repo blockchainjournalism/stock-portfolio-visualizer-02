@@ -3,9 +3,8 @@ import { toast } from "@/components/ui/use-toast";
 const API_KEY = "tGgEwEGYdbqh35uXZzhhYYMz7CYpCTlD";
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
-// Add localStorage caching
 const CACHE_KEY = 'stockData';
-const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
 
 export interface Stock {
   symbol: string;
@@ -15,6 +14,13 @@ export interface Stock {
   changesPercentage: number;
   marketCap: number;
   volume: number;
+  beta?: number;
+  lastDividend?: number;
+  eps?: number;
+  pe?: number;
+  sharesOutstanding?: number;
+  industry?: string;
+  sector?: string;
 }
 
 interface CacheData {
@@ -37,13 +43,11 @@ const getCachedData = (): Stock[] | null => {
 
 export const fetchStocks = async (): Promise<Stock[]> => {
   try {
-    // Check cache first
     const cachedData = getCachedData();
     if (cachedData) {
       return cachedData;
     }
 
-    // If no cache, fetch from API
     const response = await fetch(
       `${BASE_URL}/stock-screener?apikey=${API_KEY}&limit=50&exchange=NASDAQ&isActivelyTrading=true`
     );
@@ -65,10 +69,16 @@ export const fetchStocks = async (): Promise<Stock[]> => {
       change: stock.changes || 0,
       changesPercentage: stock.changesPercentage || 0,
       marketCap: stock.marketCap || 0,
-      volume: stock.volume || 0
+      volume: stock.volume || 0,
+      beta: stock.beta,
+      lastDividend: stock.lastDiv,
+      eps: stock.eps,
+      pe: stock.pe,
+      sharesOutstanding: stock.sharesOutstanding,
+      industry: stock.industry,
+      sector: stock.sector
     }));
 
-    // Cache the fetched data
     localStorage.setItem(CACHE_KEY, JSON.stringify({
       data: stocks,
       timestamp: Date.now()
@@ -86,10 +96,23 @@ export const fetchStocks = async (): Promise<Stock[]> => {
   }
 };
 
-interface PriceTarget {
-  symbol: string;
-  priceTarget: number;
-}
+export const fetchStockProfile = async (symbol: string): Promise<any> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/profile/${symbol}?apikey=${API_KEY}`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data[0] || null;
+  } catch (error) {
+    console.error("Failed to fetch stock profile:", error);
+    return null;
+  }
+};
 
 export const fetchPriceTarget = async (symbol: string): Promise<number | null> => {
   try {

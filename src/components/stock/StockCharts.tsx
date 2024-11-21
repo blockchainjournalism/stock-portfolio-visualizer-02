@@ -43,13 +43,28 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
 
   const data = generateMockData();
 
+  const chartConfig = {
+    price: {
+      color: "#2C74B3",
+      label: "Price"
+    },
+    volume: {
+      color: "#144272",
+      label: "Volume"
+    },
+    area: {
+      color: "#0A2647",
+      label: "Price Area"
+    }
+  };
+
   return (
     <div className="space-y-6 mb-8">
       <Card>
         <CardContent className="pt-6">
           <h3 className="text-lg font-semibold mb-4">Price History (30 Days)</h3>
           <div className="h-[300px]">
-            <ChartContainer>
+            <ChartContainer config={chartConfig}>
               <LineChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
@@ -65,7 +80,7 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
                 <Line
                   type="monotone"
                   dataKey="price"
-                  stroke="#2C74B3"
+                  stroke={chartConfig.price.color}
                   strokeWidth={2}
                   dot={false}
                 />
@@ -80,7 +95,7 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
           <CardContent className="pt-6">
             <h3 className="text-lg font-semibold mb-4">Volume Trend</h3>
             <div className="h-[250px]">
-              <ChartContainer>
+              <ChartContainer config={chartConfig}>
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
@@ -94,7 +109,7 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
                   <Tooltip content={<ChartTooltip />} />
                   <Bar
                     dataKey="volume"
-                    fill="#144272"
+                    fill={chartConfig.volume.color}
                     opacity={0.8}
                   />
                 </BarChart>
@@ -107,7 +122,7 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
           <CardContent className="pt-6">
             <h3 className="text-lg font-semibold mb-4">Price Area Chart</h3>
             <div className="h-[250px]">
-              <ChartContainer>
+              <ChartContainer config={chartConfig}>
                 <AreaChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis 
@@ -122,8 +137,8 @@ const StockCharts = ({ price, volume }: StockChartsProps) => {
                   <Area
                     type="monotone"
                     dataKey="price"
-                    stroke="#0A2647"
-                    fill="#2C74B3"
+                    stroke={chartConfig.area.color}
+                    fill={chartConfig.price.color}
                     fillOpacity={0.3}
                   />
                 </AreaChart>

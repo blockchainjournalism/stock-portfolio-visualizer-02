@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import StockHeader from "@/components/stock/StockHeader";
 import StockMetrics from "@/components/stock/StockMetrics";
 import StockDetails from "@/components/stock/StockDetails";
+import AnalystTargets from "@/components/stock/AnalystTargets";
 import { useEffect } from "react";
 
 const StockDetail = () => {
@@ -15,6 +16,16 @@ const StockDetail = () => {
   const { data: stocks = [], isLoading: isLoadingStocks } = useQuery({
     queryKey: ["stocks"],
     queryFn: fetchStocks,
+    staleTime: 24 * 60 * 60 * 1000,
+    refetchInterval: 24 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const { data: priceTarget } = useQuery({
+    queryKey: ["priceTarget", symbol],
+    queryFn: () => fetchPriceTarget(symbol!),
+    enabled: !!symbol,
     staleTime: 24 * 60 * 60 * 1000,
     refetchInterval: 24 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,
@@ -85,6 +96,10 @@ const StockDetail = () => {
           change={stock.change}
           volume={stock.volume}
           marketCap={stock.marketCap}
+        />
+        <AnalystTargets 
+          currentPrice={stock.price}
+          priceTarget={priceTarget || undefined}
         />
         <StockDetails 
           price={stock.price}

@@ -8,6 +8,7 @@ import StockHeader from "@/components/stock/StockHeader";
 import StockMetrics from "@/components/stock/StockMetrics";
 import StockDetails from "@/components/stock/StockDetails";
 import AnalystTargets from "@/components/stock/AnalystTargets";
+import StockCharts from "@/components/stock/StockCharts";
 import { useEffect } from "react";
 
 const StockDetail = () => {
@@ -96,6 +97,10 @@ const StockDetail = () => {
           change={stock.change}
           volume={stock.volume}
           marketCap={stock.marketCap}
+        />
+        <StockCharts 
+          price={stock.price}
+          volume={stock.volume}
         />
         <AnalystTargets 
           currentPrice={stock.price}

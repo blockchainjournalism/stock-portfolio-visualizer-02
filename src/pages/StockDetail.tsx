@@ -21,16 +21,6 @@ const StockDetail = () => {
     retry: 1,
   });
 
-  const { data: priceTarget } = useQuery({
-    queryKey: ["priceTarget", symbol],
-    queryFn: () => fetchPriceTarget(symbol!),
-    enabled: !!symbol,
-    staleTime: 24 * 60 * 60 * 1000,
-    refetchInterval: 24 * 60 * 60 * 1000,
-    refetchOnWindowFocus: false,
-    retry: 1,
-  });
-
   const stock = stocks.find((s) => s.symbol === symbol);
 
   useEffect(() => {
@@ -84,9 +74,11 @@ const StockDetail = () => {
       <main className="container mx-auto py-8 flex-grow px-4">
         <StockHeader 
           name={stock.name} 
-          symbol={stock.symbol} 
-          priceTarget={priceTarget || undefined}
+          symbol={stock.symbol}
           currentPrice={stock.price}
+          change={stock.change}
+          volume={stock.volume}
+          marketCap={stock.marketCap}
         />
         <StockMetrics 
           price={stock.price}

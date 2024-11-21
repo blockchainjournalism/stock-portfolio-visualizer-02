@@ -22,6 +22,7 @@ export default {
         primary: "#0A2647",
         secondary: "#144272",
         accent: "#2C74B3",
+        "card-blue": "#1e3a8a",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

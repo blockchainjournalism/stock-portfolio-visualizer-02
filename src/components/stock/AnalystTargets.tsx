@@ -5,9 +5,11 @@ import { Target } from "lucide-react";
 interface AnalystTargetsProps {
   currentPrice: number;
   priceTarget?: number;
+  symbol: string;
+  name: string;
 }
 
-const AnalystTargets = ({ currentPrice, priceTarget }: AnalystTargetsProps) => {
+const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTargetsProps) => {
   const displayTarget = priceTarget || currentPrice;
   const lowTarget = displayTarget * 0.8;
   const highTarget = displayTarget * 1.2;
@@ -24,14 +26,14 @@ const AnalystTargets = ({ currentPrice, priceTarget }: AnalystTargetsProps) => {
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-4">
         <Target className="h-6 w-6 text-primary" />
-        <h2 className="text-2xl font-bold text-primary">Stock Hedef Fiyat Analizi</h2>
+        <h2 className="text-2xl font-bold text-primary">{name} ({symbol}) Hisse Hedef Fiyat</h2>
       </div>
       
       <Card className="bg-[#4338ca] text-white">
         <CardContent className="pt-6">
-          <h3 className="text-xl font-semibold mb-2">Stock Hedef Fiyat Tahminleri</h3>
+          <h3 className="text-xl font-semibold mb-2">{name} ({symbol}) Hisse Hedef Fiyat 2025</h3>
           <p className="text-lg mb-4">
-            Ortalama Stock Hedef Fiyat: {formatPrice(displayTarget)}
+            Ortalama Hedef Fiyat: {formatPrice(displayTarget)}
           </p>
           <p className="text-sm text-white/70 mb-6">
             {priceTarget ? "25 analistin hedef fiyat tahminine dayanmaktadır" : "Hedef fiyat bulunmadığından mevcut fiyat gösterilmektedir"}

@@ -104,6 +104,8 @@ const StockDetail = () => {
         <AnalystTargets 
           currentPrice={stock.price}
           priceTarget={priceTarget || undefined}
+          symbol={stock.symbol}
+          name={stock.name}
         />
         <StockDetails 
           price={stock.price}
@@ -119,6 +121,8 @@ const StockDetail = () => {
           ceo={profile?.ceo}
           employees={profile?.fullTimeEmployees}
           website={profile?.website}
+          symbol={stock.symbol}
+          name={stock.name}
         />
         <SimilarStocks stocks={stocks} currentSymbol={stock.symbol} />
       </main>

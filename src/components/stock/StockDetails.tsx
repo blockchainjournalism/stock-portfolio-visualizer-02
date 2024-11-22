@@ -39,8 +39,10 @@ const StockDetails = ({
   description,
   ceo,
   employees,
-  website
-}: StockDetailsProps) => {
+  website,
+  symbol,
+  name
+}: StockDetailsProps & { symbol: string; name: string }) => {
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -145,7 +147,7 @@ const StockDetails = ({
           <CardContent className="pt-6">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Award className="h-5 w-5 text-primary" />
-              Company Description
+              {name} ({symbol}) Hisse Hakkında
             </h3>
             <p className="text-gray-600 leading-relaxed">{description}</p>
           </CardContent>

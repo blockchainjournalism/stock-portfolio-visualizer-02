@@ -46,12 +46,12 @@ const StockDetail = () => {
 
   useEffect(() => {
     if (stock) {
-      document.title = `${stock.name} (${stock.symbol}) Stock Price & Details`;
+      document.title = `${stock.name} (${stock.symbol}) Stock Hedef Fiyat ve Detayları`;
       const metaDescription = document.querySelector('meta[name="description"]');
       if (metaDescription) {
         metaDescription.setAttribute(
           "content",
-          `Get the latest ${stock.name} (${stock.symbol}) stock price, market cap, volume, and other financial information. Real-time stock market data and analysis.`
+          `${stock.name} (${stock.symbol}) hissesi için güncel Stock Hedef Fiyat, piyasa değeri, hacim ve diğer finansal bilgiler. Analist tahminleri ve hedef fiyat analizleri.`
         );
       }
     }
@@ -81,8 +81,8 @@ const StockDetail = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="container mx-auto py-8 flex-grow px-4">
-          <h1 className="text-2xl font-bold mb-4">Stock Not Found</h1>
-          <p>The requested stock symbol could not be found.</p>
+          <h1 className="text-2xl font-bold mb-4">Hisse Bulunamadı</h1>
+          <p>İstenen hisse sembolü bulunamadı.</p>
         </main>
         <Footer />
       </div>

@@ -24,17 +24,17 @@ const AnalystTargets = ({ currentPrice, priceTarget }: AnalystTargetsProps) => {
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-4">
         <Target className="h-6 w-6 text-primary" />
-        <h2 className="text-2xl font-bold text-primary">Analist Hedefleri</h2>
+        <h2 className="text-2xl font-bold text-primary">Stock Hedef Fiyat Analizi</h2>
       </div>
       
       <Card className="bg-[#4338ca] text-white">
         <CardContent className="pt-6">
-          <h3 className="text-xl font-semibold mb-2">Analist Hedef Fiyatları</h3>
+          <h3 className="text-xl font-semibold mb-2">Stock Hedef Fiyat Tahminleri</h3>
           <p className="text-lg mb-4">
-            Ortalama Hedef Fiyat: {formatPrice(displayTarget)}
+            Ortalama Stock Hedef Fiyat: {formatPrice(displayTarget)}
           </p>
           <p className="text-sm text-white/70 mb-6">
-            {priceTarget ? "25 analistin tahminine dayanmaktadır" : "Hedef fiyat bulunmadığından mevcut fiyat gösterilmektedir"}
+            {priceTarget ? "25 analistin hedef fiyat tahminine dayanmaktadır" : "Hedef fiyat bulunmadığından mevcut fiyat gösterilmektedir"}
           </p>
 
           <div className="relative h-2 bg-white/20 rounded-full mb-6">

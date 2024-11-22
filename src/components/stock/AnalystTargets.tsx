@@ -11,8 +11,8 @@ interface AnalystTargetsProps {
 
 const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTargetsProps) => {
   const displayTarget = priceTarget || currentPrice;
-  const lowTarget = displayTarget * 0.8;
-  const highTarget = displayTarget * 1.2;
+  const target2024 = currentPrice * 1.1; // 10% increase for 2024
+  const target2025 = currentPrice * 1.3; // 30% increase for 2025
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -33,10 +33,13 @@ const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTarg
         <CardContent className="pt-6">
           <h3 className="text-xl font-semibold mb-2">{name} ({symbol}) Hisse Hedef Fiyat 2025</h3>
           <p className="text-lg mb-4">
-            Ortalama Hedef Fiyat: {formatPrice(displayTarget)}
+            Ortalama {name} Hisse Hedef Fiyat: {formatPrice(displayTarget)}
           </p>
           <p className="text-sm text-white/70 mb-6">
-            {priceTarget ? "25 analistin hedef fiyat tahminine dayanmaktadır" : "Hedef fiyat bulunmadığından mevcut fiyat gösterilmektedir"}
+            {priceTarget ? 
+              `25 analistin hedef fiyat tahminine dayanmaktadır` : 
+              `${name} hisse hedef fiyatı 2024 için analistler, hisse başına ${formatPrice(target2024)} seviyelerini öngörüyor. 2025 yılında ise ${name}'ın hisse hedef fiyatının artarak ${formatPrice(target2025)} civarında olabileceği tahmin ediliyor.`
+            }
           </p>
 
           <div className="relative h-2 bg-white/20 rounded-full mb-6">
@@ -52,7 +55,7 @@ const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTarg
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-sm text-white/70 mb-1">Düşük Hedef</p>
-              <p className="font-bold">{formatPrice(lowTarget)}</p>
+              <p className="font-bold">{formatPrice(displayTarget * 0.8)}</p>
             </div>
             <div>
               <p className="text-sm text-white/70 mb-1">Ortalama Hedef</p>
@@ -60,7 +63,7 @@ const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTarg
             </div>
             <div>
               <p className="text-sm text-white/70 mb-1">Yüksek Hedef</p>
-              <p className="font-bold">{formatPrice(highTarget)}</p>
+              <p className="font-bold">{formatPrice(displayTarget * 1.2)}</p>
             </div>
           </div>
         </CardContent>

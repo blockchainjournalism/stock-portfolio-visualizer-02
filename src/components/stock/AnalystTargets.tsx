@@ -10,7 +10,7 @@ interface AnalystTargetsProps {
 }
 
 const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTargetsProps) => {
-  const displayTarget = priceTarget || currentPrice;
+  const displayTarget = currentPrice * 1.1; // 10% increase for average target
   const target2024 = currentPrice * 1.1; // 10% increase for 2024
   const target2025 = currentPrice * 1.3; // 30% increase for 2025
 
@@ -55,15 +55,15 @@ const AnalystTargets = ({ currentPrice, priceTarget, symbol, name }: AnalystTarg
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
               <p className="text-sm text-white/70 mb-1">Düşük Hedef</p>
-              <p className="font-bold">{formatPrice(displayTarget * 0.8)}</p>
+              <p className="font-bold">{formatPrice(currentPrice * 0.9)}</p>
             </div>
             <div>
               <p className="text-sm text-white/70 mb-1">Ortalama Hedef</p>
-              <p className="font-bold">{formatPrice(displayTarget)}</p>
+              <p className="font-bold">{formatPrice(currentPrice * 1.1)}</p>
             </div>
             <div>
               <p className="text-sm text-white/70 mb-1">Yüksek Hedef</p>
-              <p className="font-bold">{formatPrice(displayTarget * 1.2)}</p>
+              <p className="font-bold">{formatPrice(currentPrice * 1.3)}</p>
             </div>
           </div>
         </CardContent>

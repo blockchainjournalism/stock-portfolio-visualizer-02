@@ -5,9 +5,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import StockHeader from "@/components/stock/StockHeader";
-import StockMetrics from "@/components/stock/StockMetrics";
 import StockDetails from "@/components/stock/StockDetails";
 import AnalystTargets from "@/components/stock/AnalystTargets";
+import SimilarStocks from "@/components/stock/SimilarStocks";
 import { useEffect } from "react";
 
 const StockDetail = () => {
@@ -101,12 +101,6 @@ const StockDetail = () => {
           volume={stock.volume}
           marketCap={stock.marketCap}
         />
-        <StockMetrics 
-          price={stock.price}
-          change={stock.change}
-          volume={stock.volume}
-          marketCap={stock.marketCap}
-        />
         <AnalystTargets 
           currentPrice={stock.price}
           priceTarget={priceTarget || undefined}
@@ -126,6 +120,7 @@ const StockDetail = () => {
           employees={profile?.fullTimeEmployees}
           website={profile?.website}
         />
+        <SimilarStocks stocks={stocks} currentSymbol={stock.symbol} />
       </main>
       <Footer />
     </div>
